@@ -1,12 +1,10 @@
 package com.example.OrganaEvent.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class entreprise {
+@Table(name = "employe")
+public class Employe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +13,15 @@ public class entreprise {
     private String nom;
     private String email;
     private String motDePasse;
-    private String secteur;
+    private String poste;
 
-    public entreprise() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "entreprise_id") // cle etrangere
+    private Entreprise entreprise;
 
-    // Getters et setters
+    public Employe() {}
+
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -33,6 +34,9 @@ public class entreprise {
     public String getMotDePasse() { return motDePasse; }
     public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
 
-    public String getSecteur() { return secteur; }
-    public void setSecteur(String secteur) { this.secteur = secteur; }
+    public String getPoste() { return poste; }
+    public void setPoste(String poste) { this.poste = poste; }
+
+    public Entreprise getEntreprise() { return entreprise; }
+    public void setEntreprise(Entreprise entreprise) { this.entreprise = entreprise; }
 }

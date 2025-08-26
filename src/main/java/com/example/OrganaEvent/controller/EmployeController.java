@@ -1,6 +1,6 @@
 package com.example.OrganaEvent.controller;
 
-import com.example.OrganaEvent.entity.employe;
+import com.example.OrganaEvent.entity.Employe;
 import com.example.OrganaEvent.repository.EmployeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +15,12 @@ public class EmployeController {
     private EmployeRepository employeRepository;
 
     @PostMapping("/add")
-    public employe ajouter(@RequestBody employe e) {
+    public Employe ajouter(@RequestBody Employe e) {
         return employeRepository.save(e);
     }
 
     @GetMapping("/all")
-    public List<employe> afficherTout() {
+    public List<Employe> afficherTout() {
         return employeRepository.findAll();
     }
 }

@@ -1,13 +1,16 @@
-// 📁 fichier : EmployeRepository.java
 package com.example.OrganaEvent.repository;
 
-import com.example.OrganaEvent.entity.employe;
+import com.example.OrganaEvent.entity.Employe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface EmployeRepository extends JpaRepository<employe, Long> {
-    // Tu peux ajouter ici des méthodes personnalisées si besoin
-    boolean existsByEmailAndMotDePasse(String email, String motDePasse);
+import java.util.Optional;
 
+@Repository
+public interface EmployeRepository extends JpaRepository<Employe, Long> {
+    Optional<Employe> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    Optional<Employe> findByEmailAndMotDePasse(String email, String motDePasse);
 }

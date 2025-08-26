@@ -1,6 +1,6 @@
 package com.example.OrganaEvent.controller;
 
-import com.example.OrganaEvent.entity.organisateur;
+import com.example.OrganaEvent.entity.Organisateur;
 import com.example.OrganaEvent.repository.OrganisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +15,12 @@ public class OrganisateurController {
     private OrganisateurRepository organisateurRepository;
 
     @PostMapping("/add")
-    public organisateur ajouterOrganisateur(@RequestBody organisateur organisateur) {
+    public Organisateur ajouterOrganisateur(@RequestBody Organisateur organisateur) {
         return organisateurRepository.save(organisateur);
     }
 
     @GetMapping("/all")
-    public List<organisateur> getAllOrganisateurs() {
+    public List<Organisateur> getAllOrganisateurs() {
         return organisateurRepository.findAll();
     }
 }

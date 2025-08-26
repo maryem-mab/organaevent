@@ -1,12 +1,10 @@
 package com.example.OrganaEvent.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class organisateur {
+@Table(name = "organisateur")
+public class Organisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +14,9 @@ public class organisateur {
     private String email;
     private String motDePasse;
 
-    public organisateur() {
-    }
+    public Organisateur() {}
 
-    // Getters et setters
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
