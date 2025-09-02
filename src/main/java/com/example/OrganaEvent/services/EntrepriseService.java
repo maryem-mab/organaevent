@@ -1,4 +1,5 @@
 package com.example.OrganaEvent.services;
+
 import com.example.OrganaEvent.entity.Entreprise;
 import com.example.OrganaEvent.repository.EntrepriseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +15,37 @@ public class EntrepriseService {
 
     // Ajouter une entreprise
     public Entreprise register(Entreprise entreprise) {
-        // Vérifier si email déjà utilisé
         if (entrepriseRepository.existsByEmail(entreprise.getEmail())) {
             throw new RuntimeException("Email déjà utilisé !");
         }
         return entrepriseRepository.save(entreprise);
     }
 
-    // Récupérer toutes les entreprises
+    // Afficher toutes les entreprises
     public List<Entreprise> getAll() {
         return entrepriseRepository.findAll();
     }
 
-    // Récupérer une entreprise par ID
+    // Afficher une entreprise par ID
     public Entreprise getById(Long id) {
-        return entrepriseRepository.findById(id).orElse(null);
+        return entrepriseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Entreprise non trouvée !"));
+    }
+
+    // Modifier entreprise
+    public Entreprise updateEntreprise(Long id, Entreprise newEntreprise) {
+        return entrepriseRepository.findById(id).map(e -> {
+            e.setNomEntreprise(newEntreprise.getNomEntreprise());
+            e.setEmail(newEntreprise.getEmail());
+            e.setMotDePasse(newEntreprise.getMotDePasse());
+            e.setTelephone(newEntreprise.getTelephone());
+            e.setDomaineActivite(newEntreprise.getDomaineActivite());
+            return entrepriseRepository.save(e);
+        }).orElseThrow(() -> new RuntimeException("Entreprise non trouvée !"));
+    }
+
+    // Supprimer entreprise
+    public void deleteEntreprise(Long id) {
+        entrepriseRepository.deleteById(id);
     }
 }
-

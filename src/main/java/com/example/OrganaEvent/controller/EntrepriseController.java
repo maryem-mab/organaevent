@@ -1,33 +1,55 @@
 package com.example.OrganaEvent.controller;
 
 import com.example.OrganaEvent.entity.Entreprise;
-import com.example.OrganaEvent.repository.EntrepriseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.OrganaEvent.services.EntrepriseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/entreprises")
-@CrossOrigin(origins = "http://localhost:4200") // Angular app
-
+@RequestMapping("/api/entreprises")
+@CrossOrigin(origins = "http://localhost:4200") // autoriser Angular
 public class EntrepriseController {
 
-    @Autowired
-    private EntrepriseRepository entrepriseRepository;
+    private final EntrepriseService entrepriseService;
 
-    @PostMapping("/add")
-    public String ajouterEntreprise(@RequestBody Entreprise entreprise) {
-        if (entrepriseRepository.existsByEmail(entreprise.getEmail())) {
-            return "Email déjà utilisé !";
-        }
-        entrepriseRepository.save(entreprise);
-        return "Entreprise ajoutée avec succès !";
+    public EntrepriseController(EntrepriseService entrepriseService) {
+        this.entrepriseService = entrepriseService;
     }
 
-    // Récupérer toutes les entreprises
+    // Ajouter entreprise
+    @PostMapping("/add")
+    public String ajouterEntreprise(@RequestBody Entreprise entreprise) {
+        try {
+            entrepriseService.register(entreprise);
+            return "Entreprise ajoutée avec succès !";
+        } catch (RuntimeException e) {
+            return e.getMessage(); // "Email déjà utilisé !"
+        }
+    }
+
+    // Afficher toutes les entreprises
     @GetMapping("/all")
     public List<Entreprise> getAllEntreprises() {
-        return entrepriseRepository.findAll();
+        return entrepriseService.getAll();
+    }
+
+    // Afficher entreprise par ID
+    @GetMapping("/{id}")
+    public Entreprise getEntrepriseById(@PathVariable Long id) {
+        return entrepriseService.getById(id);
+    }
+
+    // Modifier entreprise
+    @PutMapping("/update/{id}")
+    public Entreprise updateEntreprise(@PathVariable Long id, @RequestBody Entreprise entreprise) {
+        return entrepriseService.updateEntreprise(id, entreprise);
+    }
+
+    // Supprimer entreprise
+    @DeleteMapping("/delete/{id}")
+    public String deleteEntreprise(@PathVariable Long id) {
+        entrepriseService.deleteEntreprise(id);
+        return "Entreprise supprimée avec succès !";
     }
 }
